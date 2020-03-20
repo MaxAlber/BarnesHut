@@ -1,3 +1,1 @@
-# teamaufgabe
-
-#Teamaufgabe
+# Teamaufgabe

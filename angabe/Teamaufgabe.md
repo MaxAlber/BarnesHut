@@ -117,7 +117,7 @@ sollte die gesamte Region, die vom Octtree abgedeckt wird, darstellen. Sie könn
 Projektionsrichtung für die Visualisierung wählen (z.B. wie bisher Projektionen auf die 
 x-y-Ebene). Testen Sie die Simulation zunächst mit den Himmelskörpern, die Sie in bisherigen Versionen 
 benutzt haben, um vergleichen zu können. Eine weitere Möglichkeit zu testen ist, zunächst alle 
-z-Koordinaten 0 zu setzen und auch die Regionen der Blattknoten zu visualisieren (siehe Abbildung 2). 
+z-Koordinaten 0 zu setzen und auch die Regionen der Blattknoten zu visualisieren (siehe Abbildung 4). 
 
 Generieren Sie unter Verwendung von Zufallszahlgeneratoren eine große Anzahl N von Himmelskörpern 
 unterschiedlicher Massen und initialen Positionen und Bewegungsvektoren um Ihre Simulation weiter

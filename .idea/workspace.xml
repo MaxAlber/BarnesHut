@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="df32671a-21a7-4b4a-80ae-4d7c7f350452" name="Default Changelist" comment="" />
+    <list default="true" id="df32671a-21a7-4b4a-80ae-4d7c7f350452" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,6 +16,9 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1ZOnq0XpdFIN9Fxa3o8pGKo5Zem" />
   <component name="ProjectViewState">
@@ -44,14 +50,22 @@
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
     <state x="771" y="78" key="#Project_Structure/0.0.2194.1194/3840.0.1680.1010@0.0.2194.1194" timestamp="1585046775113" />
-    <state x="1030" y="308" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1585046828020">
+    <state x="1030" y="308" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1585055012472">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state x="1030" y="308" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.2194.1194/3840.0.1680.1010@0.0.2194.1194" timestamp="1585046828020" />
-    <state x="659" y="0" key="SettingsEditor" timestamp="1585046896982">
+    <state x="1030" y="308" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.2194.1194/3840.0.1680.1010@0.0.2194.1194" timestamp="1585055012472" />
+    <state x="848" y="15" key="CommitChangelistDialog2" timestamp="1585055132610">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state x="659" y="0" key="SettingsEditor/0.0.2194.1194/3840.0.1680.1010@0.0.2194.1194" timestamp="1585046896982" />
+    <state x="848" y="15" key="CommitChangelistDialog2/0.0.2194.1194/3840.0.1680.1010@0.0.2194.1194" timestamp="1585055132610" />
+    <state x="659" y="0" key="SettingsEditor" timestamp="1585055149040">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state x="659" y="0" key="SettingsEditor/0.0.2194.1194/3840.0.1680.1010@0.0.2194.1194" timestamp="1585055149040" />
+    <state x="990" y="335" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1585055107752">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state x="990" y="335" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.2194.1194/3840.0.1680.1010@0.0.2194.1194" timestamp="1585055107752" />
     <state x="835" y="191" key="run.anything.popup" timestamp="1585046839235">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>

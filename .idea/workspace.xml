@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="df32671a-21a7-4b4a-80ae-4d7c7f350452" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/StdDraw.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Vector3.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Simulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Simulation.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,16 +24,35 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1ZOnq0XpdFIN9Fxa3o8pGKo5Zem" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../test" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.116027534" />
     <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RunManager">
+    <configuration name="Simulation" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Simulation" />
+      <module name="Teamaufgabe" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Simulation" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -45,6 +67,9 @@
     </task>
     <servers />
   </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
   <component name="WindowStateProjectService">
     <state x="771" y="78" key="#Project_Structure" timestamp="1585046775113">
       <screen x="0" y="0" width="2194" height="1194" />
@@ -54,21 +79,53 @@
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
     <state x="1030" y="308" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.2194.1194/3840.0.1680.1010@0.0.2194.1194" timestamp="1585055012472" />
+    <state x="146" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1589109400899">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="146" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1280.680@0.0.1280.680" timestamp="1589109400899" />
     <state x="848" y="15" key="CommitChangelistDialog2" timestamp="1585055132610">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
     <state x="848" y="15" key="CommitChangelistDialog2/0.0.2194.1194/3840.0.1680.1010@0.0.2194.1194" timestamp="1585055132610" />
+    <state x="421" y="95" key="FileChooserDialogImpl" timestamp="1588981287784">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="421" y="95" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1588981287784" />
+    <state width="1237" height="151" key="GridCell.Tab.0.bottom" timestamp="1589147563388">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1237" height="151" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1589147563388" />
+    <state width="1237" height="151" key="GridCell.Tab.0.center" timestamp="1589147563388">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1237" height="151" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1589147563388" />
+    <state width="1237" height="151" key="GridCell.Tab.0.left" timestamp="1589147563387">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1237" height="151" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1589147563387" />
+    <state width="1237" height="151" key="GridCell.Tab.0.right" timestamp="1589147563388">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1237" height="151" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1589147563388" />
     <state x="659" y="0" key="SettingsEditor" timestamp="1585055149040">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
     <state x="659" y="0" key="SettingsEditor/0.0.2194.1194/3840.0.1680.1010@0.0.2194.1194" timestamp="1585055149040" />
-    <state x="990" y="335" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1585055107752">
-      <screen x="0" y="0" width="2194" height="1194" />
+    <state x="578" y="191" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1588722739352">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
+    <state x="578" y="191" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680@0.0.1280.680" timestamp="1588722739352" />
     <state x="990" y="335" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.2194.1194/3840.0.1680.1010@0.0.2194.1194" timestamp="1585055107752" />
     <state x="835" y="191" key="run.anything.popup" timestamp="1585046839235">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
     <state x="835" y="191" key="run.anything.popup/0.0.2194.1194/3840.0.1680.1010@0.0.2194.1194" timestamp="1585046839235" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="node.body" language="JAVA" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

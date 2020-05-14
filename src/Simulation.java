@@ -56,7 +56,6 @@ public class Simulation {
 
         }
 
-
         // calculate force for every body
 
 

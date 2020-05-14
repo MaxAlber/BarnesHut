@@ -21,5 +21,4 @@ public class Tree {
         root.iterateExternalNodes();
     }
 
-
 }

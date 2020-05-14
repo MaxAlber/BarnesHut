@@ -312,7 +312,4 @@ public class Node {
 
         return externalNode;
     }
-
-
-
 }

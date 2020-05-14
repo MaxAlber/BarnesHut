@@ -6,43 +6,59 @@ public class Simulation {
 
     public static void main(String[] args) {
         Tree testTree = new Tree();
-        //CelestialBody b1 = new CelestialBody("b1", 1.898e27, 69911e3,new Vector3(19e7,90e1,-15e2),
-        //        new Vector3(0,0,0), StdDraw.ORANGE);
-        CelestialBody b2 = new CelestialBody("b2", 2 ,1822e3,new Vector3(15e4,12e5,18e6),
-                new Vector3(0,0,0), StdDraw.YELLOW);
 
-        CelestialBody b3 = new CelestialBody("b3", 3 ,189e3,new Vector3(14e4,-12e5,-18e6),
-                new Vector3(0,0,0), StdDraw.RED);
-        CelestialBody b4 = new CelestialBody("b4", 7 ,1322e3,new Vector3(-10e4,-12e5,18e6),
-                new Vector3(0,0,0), StdDraw.GREEN);
-        CelestialBody b5 = new CelestialBody("b5", 6 ,1822e3,new Vector3(0.76*AU,0.76*AU,0.76*AU),
-                new Vector3(0,0,0), StdDraw.YELLOW);
+        CelestialBody b1 = new CelestialBody("b1", 7, 1822e3, new Vector3(0.76 * AU, 0.76 * AU, 0.76 * AU),
+                new Vector3(0, 0, 0), StdDraw.YELLOW);
+
+        CelestialBody b2 = new CelestialBody("b2", 19, 183e3, new Vector3(0.32 * AU, 0.44 * AU, -0.92 * AU),
+                new Vector3(0, 0, 0), StdDraw.RED);
+
+        CelestialBody b3 = new CelestialBody("b3", 25, 199e3, new Vector3(-0.77 * AU, 0.56 * AU, 0.29 * AU),
+                new Vector3(0, 0, 0), StdDraw.GREEN);
+
+        CelestialBody b4 = new CelestialBody("b4", 36, 259e3, new Vector3(0.7 * AU, -0.03 * AU, -0.57 * AU),
+                new Vector3(0, 0, 0), StdDraw.BLUE);
 
 
+        StdDraw.setXscale(-2 * AU, 2 * AU);
+        StdDraw.setYscale(-2 * AU, 2 * AU);
+        //StdDraw.enableDoubleBuffering();
+        StdDraw.clear(StdDraw.BLACK);
 
-        //testTree.add(b1);
 
-        System.out.println("add b2");
+        testTree.add(b1);
+
+
         testTree.add(b2);
-        System.out.println("--------------------");
+        /*System.out.println("--------------------");
+        System.out.println(testTree.getRoot().getGesamtmasse());
+        System.out.println("root " + testTree.getRoot() + " schwerpunkt " + testTree.getRoot().getSchwerpunkt().getX() + ", "
+                + testTree.getRoot().getSchwerpunkt().getY() + ", " + testTree.getRoot().getSchwerpunkt().getZ());
+        System.out.println();*/
 
-
-        System.out.println("add b3");
         testTree.add(b3);
-        System.out.println("--------------------");
 
-        System.out.println("add b4");
+
         testTree.add(b4);
-        System.out.println("--------------------");
-
-        System.out.println("add b5");
-        testTree.add(b5);
-        System.out.println("--------------------");
 
 
+        while (true) {
+            testTree.calculateForces();
+
+            testTree = new Tree();
+
+            testTree.add(b1);
+            testTree.add(b2);
+            testTree.add(b3);
+            testTree.add(b4);
+
+            StdDraw.clear(StdDraw.BLACK);
+
+        }
+
+
+        // calculate force for every body
 
 
     }
-
-
 }

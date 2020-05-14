@@ -3,14 +3,23 @@ public class Tree {
     public static final double AU = 150e9;
     private Node root;
 
-    public void add(CelestialBody b){
-        if(root == null){
-            root= new Node(b);
-            System.out.println("root "+ root+ " gesamtmasse "+root.getGesamtmasse());
-        }else {
-            root.add(b,0,0,0,AU,root);
+    public void add(CelestialBody b) {
+        if (root == null) {
+            root = new Node(b);
+        } else {
+            root.setHilf(true);
+            root.add(b, 0, 0, 0, AU);
         }
 
     }
+
+    public Node getRoot() {
+        return root;
+    }
+    public void calculateForces()
+    {
+        root.iterateExternalNodes();
+    }
+
 
 }

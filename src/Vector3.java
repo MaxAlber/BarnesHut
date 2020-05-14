@@ -36,15 +36,20 @@ public class Vector3 {
         this.z = z;
     }
 
+    public Vector3(Vector3 vec) {
+        this.x = vec.getX();
+        this.y = vec.getY();
+        this.z = vec.getZ();
+    }
 
     // Returns the sum of this vector and vector 'v'.
     public Vector3 plus(Vector3 v) {
-        return new Vector3(this.x+v.x, this.y+v.y, this.z+v.z);
+        return new Vector3(this.x + v.x, this.y + v.y, this.z + v.z);
     }
 
     // Returns the product of this vector and 'd'.
     public Vector3 times(double d) {
-        return new Vector3(this.x*d,this.y*d,this.z*d);
+        return new Vector3(this.x * d, this.y * d, this.z * d);
     }
 
     // Returns the sum of this vector and -1*v.
@@ -73,7 +78,7 @@ public class Vector3 {
         double dY = result.y;
         double dZ = result.z;
 
-        return Math.sqrt(dX*dX+dY*dY+dZ*dZ);
+        return Math.sqrt(dX * dX + dY * dY + dZ * dZ);
     }
 
     // Normalizes this vector: changes the length of this vector such that it becomes one.
@@ -94,7 +99,7 @@ public class Vector3 {
 
         //TODO: implement method.
         StdDraw.setPenColor(color);
-        StdDraw.filledCircle(x,y,radius);
+        StdDraw.filledCircle(x, y, radius);
 
     }
 
@@ -103,9 +108,7 @@ public class Vector3 {
     public String toString() {
 
         //TODO: implement method.
-        return "["+x+","+y+","+z+"]";
+        return "[" + x + "," + y + "," + z + "]";
     }
-
-
 }
 

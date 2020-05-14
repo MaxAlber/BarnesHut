@@ -1,3 +1,5 @@
+import java.awt.*;
+
 public class Node {
 
     private CelestialBody body;
@@ -18,18 +20,21 @@ public class Node {
      *children[7]: (x,y,z)=(+,-,-)
      */
 
-    public double getGesamtmasse() {
+    public double getGesamtmasse()
+    {
         return gesamtmasse;
     }
 
-    public Node(CelestialBody body) {
+    public Node(CelestialBody body)
+    {
         this.body = body;
         this.active = true;
         this.gesamtmasse = body.getMass();
         this.schwerpunkt = body.getPosition();
     }
 
-    private double GesamtMass() {
+    private double GesamtMass()
+    {
 
         for (int i = 0; i < 8; i++) {
             if (children[i] != null) {
@@ -39,7 +44,8 @@ public class Node {
         return gesamtmasse;
     }
 
-    private Vector3 Schwerpunkt() {
+    private Vector3 Schwerpunkt()
+    {
         double x = 0;
         double y = 0;
         double z = 0;
@@ -59,7 +65,8 @@ public class Node {
     }
 
 
-    public void add(CelestialBody b, double punktX, double punktY, double punktZ, double length, Node rootNode) {
+    public void add(CelestialBody b, double punktX, double punktY, double punktZ, double length, Node rootNode)
+    {
         double halflength = length / 2;
 
         if (b.getPosition().getX() >= punktX) {
@@ -67,8 +74,6 @@ public class Node {
                 if (b.getPosition().getZ() >= punktZ) {
                     if (children[0] == null) {
                         children[0] = new Node(b);
-
-
                         if (rootNode.body != null) {
 
                             CelestialBody body1 = new CelestialBody(rootNode.body);
@@ -197,8 +202,121 @@ public class Node {
                 }
             }
         }
+    }
+
+    // iterate over every body to calculate force for every body
+    public Vector3 calculateForce(CelestialBody body)
+    {
+
+        // min is the min distance to calculate force (standard: 0.5)
+        double min = 0.5;
+
+        // s = width of the region of the node
+        double s = 1;
+
+        // d = distance between body and nodes center of mass
+        double d = 1;
+
+        Vector3 force = new Vector3(10000000,10000000,10000000);
+
+
+        // check if this body equals node body
+        if(body.equals(this.body))
+        {
+            return force;
+        }
+
+        // check if node is external node
+        boolean externalNode = true;
+        for(int i = 0; i<8; i++)
+        {
+            if(this.children[i] != null)
+            {
+                externalNode = false;
+                break;
+            }
+        }
+
+        // if externalNode, calculate force and return
+        if(externalNode)
+        {
+            // TODO calculate force
+            CelestialBody bodytmp = new CelestialBody("name", this.gesamtmasse, 1,
+                    this.schwerpunkt, new Vector3(0,0,0), Color.GRAY);
+            force = body.gravitationalForce(bodytmp);
+            System.out.println("FORCE: " + force);
+            return force;
+        }
+
+        // if not external node:
+
+        // calculate ratio s/d for every child
+
+        for(int i = 0; i<8; i++)
+        {
+            // if children not null
+            if(this.children[i] != null)
+            {
+                // if s/d < min, treat this node as single body and calculate force
+                if (s / d < min)
+                {
+                    // TODO calculate force
+                    CelestialBody bodytmp = new CelestialBody("name", this.gesamtmasse, 1,
+                            this.schwerpunkt, new Vector3(0,0,0), Color.GRAY);
+                    force = body.gravitationalForce(bodytmp);
+                    System.out.println("FORCE: " + force);
+                    return force;
+                }
+                // if s/d < min, recursively call calculateForce on child node
+                return force.plus(children[i].calculateForce(body));
+            }
+        }
+        return force;
+    }
+
+    public void iterateExternalNodes()
+    {
+
+        for(int i = 0; i<8; i++)
+        {
+            if(this.children[i] != null)
+            {
+                // check if node is external node
+                boolean externalNode = this.children[i].isExternal();
+
+                if (externalNode)
+                {
+                    System.out.println(this.children[i].body.toString());
+                    Vector3 force = this.children[i].calculateForce(this.children[i].body);
+                    this.children[i].body.move(force);
+                    this.children[i].body.draw();
+                }
+                // else go to child note
+                else {
+                    this.children[i].iterateExternalNodes();
+                }
+            }
+        }
 
 
     }
+
+    public boolean isExternal()
+    {
+        // check if node is external node
+        boolean externalNode = true;
+        for(int i = 0; i<8; i++)
+        {
+            if(this.children[i] != null)
+            {
+                externalNode = false;
+                break;
+            }
+        }
+
+        return externalNode;
+    }
+
+
 
 }

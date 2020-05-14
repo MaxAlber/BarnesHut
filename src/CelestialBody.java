@@ -95,9 +95,9 @@ public class CelestialBody {
     // Draws the celestial body to the current StdDraw canvas as a dot using 'color' of this body.
     // The radius of the dot is in relation to the radius of the celestial body
     // (use a conversion based on the logarithm as in 'Simulation.java').
-    public void draw() {
+    public void draw()
+    {
         position.drawAsDot(1e9 * Math.log10(radius), color);
-
     }
 
 }

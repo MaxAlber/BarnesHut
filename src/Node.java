@@ -55,7 +55,8 @@ public class Node {
         this.hilf = hilf;
     }
 
-    public void add(CelestialBody b, double punktX, double punktY, double punktZ, double length) {
+    public void add(CelestialBody b, double punktX, double punktY, double punktZ, double length)
+    {
         // (punktX, punktY, punktZ) ist der Ursprung von der aktuellen Rekursion
         // length ist Länge der x- y- z-Achse
         double halflength = length / 2; //rechnen den Bereich der nächsten Rekursion
@@ -201,26 +202,19 @@ public class Node {
     }
 
     // iterate over every body to calculate force for every body
-    public Vector3 calculateForce(CelestialBody body)
+    public Vector3 calculateForce(CelestialBody body, double length)
     {
 
         // min is the min distance to calculate force (standard: 0.5)
         double min = 0.5;
 
         // s = width of the region of the node
-        double s = 1;
+        double s = length;
 
         // d = distance between body and nodes center of mass
-        double d = 1;
+        double d = this.schwerpunkt.distanceTo(body.getPosition());
 
-        Vector3 force = new Vector3(10000000,10000000,10000000);
-
-
-        // check if this body equals node body
-        if(body.equals(this.body))
-        {
-            return force;
-        }
+        Vector3 force = new Vector3(0,0,0);
 
         // check if node is external node
         boolean externalNode = true;
@@ -234,13 +228,11 @@ public class Node {
         }
 
         // if externalNode, calculate force and return
-        if(externalNode)
+        if(externalNode && d!=0)
         {
-            // TODO calculate force
             CelestialBody bodytmp = new CelestialBody("name", this.gesamtmasse, 1,
                     this.schwerpunkt, new Vector3(0,0,0), Color.GRAY);
             force = body.gravitationalForce(bodytmp);
-            //System.out.println("FORCE: " + force);
             return force;
         }
 
@@ -260,17 +252,16 @@ public class Node {
                     CelestialBody bodytmp = new CelestialBody("name", this.gesamtmasse, 1,
                             this.schwerpunkt, new Vector3(0,0,0), Color.GRAY);
                     force = body.gravitationalForce(bodytmp);
-                    //System.out.println("FORCE: " + force);
                     return force;
                 }
                 // if s/d < min, recursively call calculateForce on child node
-                return force.plus(children[i].calculateForce(body));
+                return force.plus(children[i].calculateForce(body, length/2));
             }
         }
         return force;
     }
 
-    public void iterateExternalNodes()
+    public void calculateForce(Node root)
     {
 
         for(int i = 0; i<8; i++)
@@ -282,21 +273,40 @@ public class Node {
 
                 if (externalNode)
                 {
-                    //System.out.println(this.children[i].body.toString());
-                    Vector3 force = this.children[i].calculateForce(this.children[i].body);
+                    Vector3 force = root.calculateForce(this.children[i].body, 150e9);
                     this.children[i].body.move(force);
+                    //this.children[i].body.draw();
+                }
+                // else go to child note
+                else {
+                    this.children[i].calculateForce(root);
+                }
+            }
+        }
+    }
+
+    public void drawNodes()
+    {
+        for(int i = 0; i<8; i++)
+        {
+            if(this.children[i] != null)
+            {
+                // check if node is external node
+                boolean externalNode = this.children[i].isExternal();
+
+                if (externalNode)
+                {
                     this.children[i].body.draw();
                 }
                 // else go to child note
                 else {
-                    this.children[i].iterateExternalNodes();
+                    this.children[i].drawNodes();
                 }
             }
         }
-
-
     }
 
+    // method checks if node is an external node
     public boolean isExternal()
     {
         // check if node is external node
@@ -312,4 +322,15 @@ public class Node {
 
         return externalNode;
     }
+
+    public Node[] getChildren()
+    {
+        return this.children;
+    }
+
+    public CelestialBody getBody()
+    {
+        return this.body;
+    }
+
 }

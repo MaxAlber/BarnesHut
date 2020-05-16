@@ -212,7 +212,7 @@ public class Node {
 
 
     // iterate over every body to calculate force for every body
-    public Vector3 calculateForce(CelestialBody body, double length)
+    public Vector3 calculateForce(CelestialBody body)
     {
 
         // min is the min distance to calculate force (standard: 0.5)
@@ -255,7 +255,7 @@ public class Node {
                 if(this.children[i] != null)
                 {
                     // if s/d > min, recursively call calculateForce on child node
-                    force = force.plus(children[i].calculateForce(body, length / 2));
+                    force = force.plus(children[i].calculateForce(body));
                 }
             }
             return force;
@@ -273,34 +273,13 @@ public class Node {
 
                 if (externalNode)
                 {
-                    Vector3 force = root.calculateForce(this.children[i].body, 150e9);
+                    Vector3 force = root.calculateForce(this.children[i].body);
                     this.children[i].body.move(force);
                     this.children[i].body.draw();
                 }
                 // else go to child note
                 else {
                     this.children[i].calculateForce(root);
-                }
-            }
-        }
-    }
-
-    public void drawNodes()
-    {
-        for(int i = 0; i<8; i++)
-        {
-            if(this.children[i] != null)
-            {
-                // check if node is external node
-                boolean externalNode = this.children[i].isExternal();
-
-                if (externalNode)
-                {
-                    this.children[i].body.draw();
-                }
-                // else go to child note
-                else {
-                    this.children[i].drawNodes();
                 }
             }
         }

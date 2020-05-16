@@ -7,7 +7,7 @@ public class Tree {
     {
         if (root == null)
         {
-            root = new Node(b, 0, 0, 0, 100000*AU);
+            root = new Node(b, 0, 0, 0, 10*AU);
         } else
         {
             root.add(b);
@@ -22,9 +22,6 @@ public class Tree {
         root.calculateForce(root);
     }
 
-    public void drawNodes()
-    {
-        root.drawNodes();
-    }
+
 
 }

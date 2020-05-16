@@ -1,11 +1,15 @@
 import java.awt.*;
 
 public class Node {
+    public static final double AU = 150e9;
 
     private CelestialBody body;
     private double gesamtmasse; //Gesamtmasse vom Teilbaum
     private Vector3 schwerpunkt; //Schwerpunkt vom Teilbaum
     private Node[] children = new Node[8]; //8 Knoten je Ebene
+
+    private double x,y,z, length;
+
 
     /*
      *children[0]: (x,y,z)=(+,+,+)
@@ -31,175 +35,181 @@ public class Node {
         return schwerpunkt;
     }
 
-    public Node(CelestialBody body) {
+    public Node(CelestialBody body, double x, double y, double z, double length)
+    {
+        /*
+        StdDraw.setPenColor(Color.white);
+        StdDraw.circle(x,y,20);
+        StdDraw.line(x-length/2, y+length/2, x+length/2, y+length/2);
+        StdDraw.line(x+length/2, y+length/2, x+length/2, y-length/2);
+        StdDraw.line(x+length/2, y-length/2, x-length/2, y-length/2);
+        StdDraw.line(x-length/2, y-length/2, x-length/2, y+length/2);
+        */
         this.body = body;
         this.gesamtmasse = body.getMass();
         this.schwerpunkt = new Vector3(body.getPosition()); //// neue Vector3 erzeugen, vermeiden Identität Problem
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.length = length;
     }
 
-    private void GMundSP(CelestialBody b) { //berechnen Gesamtmasse und Schwerpunkt der Node
-        gesamtmasse = gesamtmasse + b.getMass();
+    // this method calculates the schwerpunkt and gesamtmasse
+    private void calcmass(CelestialBody b) { //berechnen Gesamtmasse und Schwerpunkt der Node
+        this.gesamtmasse = this.gesamtmasse + b.getMass();
 
         double x, y, z;
-        x = (schwerpunkt.getX() * (gesamtmasse - b.getMass()) + b.getPosition().getX() * b.getMass()) / gesamtmasse;
-        y = (schwerpunkt.getY() * (gesamtmasse - b.getMass()) + b.getPosition().getY() * b.getMass()) / gesamtmasse;
-        z = (schwerpunkt.getZ() * (gesamtmasse - b.getMass()) + b.getPosition().getZ() * b.getMass()) / gesamtmasse;
+        x = (this.schwerpunkt.getX() * (this.gesamtmasse - b.getMass()) + b.getPosition().getX() * b.getMass()) /
+                this.gesamtmasse;
+        y = (this.schwerpunkt.getY() * (this.gesamtmasse - b.getMass()) + b.getPosition().getY() * b.getMass()) /
+                this.gesamtmasse;
+        z = (this.schwerpunkt.getZ() * (this.gesamtmasse - b.getMass()) + b.getPosition().getZ() * b.getMass()) /
+                this.gesamtmasse;
 
-        schwerpunkt = new Vector3(x, y, z);
+        this.schwerpunkt = new Vector3(x, y, z);
 
     }
 
-    private boolean hilf; //eine Hilfsvariable, um unnötige Rechnen in der Methode add() zu vermeiden
-
-    public void setHilf(boolean hilf) { // vom Außen anwenden (z.B. Klasse Tree)
-        this.hilf = hilf;
-    }
-
-    public void add(CelestialBody b, double punktX, double punktY, double punktZ, double length)
+    // this methods adds bodys to the tree
+    public void add(CelestialBody b)
     {
-        // (punktX, punktY, punktZ) ist der Ursprung von der aktuellen Rekursion
-        // length ist Länge der x- y- z-Achse
-        double halflength = length / 2; //rechnen den Bereich der nächsten Rekursion
-
-        if (hilf) { //berechnen Gesamtmasse und Schwerpunkt von this Node und Celestialbody b
-            GMundSP(b);
+        if(!this.isExternal())
+        {
+            this.calcmass(b);
+            this.findNode(b);
         }
+        else if(this.isExternal())
+        {
+            CelestialBody b1 = this.body;
+            this.gesamtmasse = 0;
+            this.schwerpunkt = new Vector3(0,0,0);
+            this.findNode(b1);
+            this.findNode(b);
+            this.calcmass(b1);
+            this.calcmass(b);
+        }
+    }
 
-        // (punktX, punktY, punktZ) ist der Ursprung von der aktuellen Rekursion
-        if (b.getPosition().getX() >= punktX) {
-            if (b.getPosition().getY() >= punktY) {
-                if (b.getPosition().getZ() >= punktZ) { //children[0]: (x,y,z)=(+,+,+)
-                    if (children[0] == null) { //gefundete Node ist leer, CelestialBody b wird darin abgelegt.
-                        children[0] = new Node(b);
-                        if (body != null) { //Node ist besetzt, darin abgelegte CelestialBody wird wieder durch add in Node hinzufügen
-                            CelestialBody body1 = new CelestialBody(body); // neue CelestialBody erzeugen, vermeiden Identität Problem
-                            body = null; //this Node wird als einen inneren Konten gekennzeichnet
-                            hilf = false; //Daten von body schon in der Node abgelegt, muss nicht wiederrechnen
-                            add(body1, punktX, punktY, punktZ, length); //add() Methode in this Node wieder mal aufrufen
-                        }
-                    } else {
-                        children[0].hilf = true; //damit Daten von body auf children[0] ablegen
-                        children[0].add(b, punktX + halflength, //eine Node in kleinerem Bereich erzeugen
-                                punktY + halflength,
-                                punktZ + halflength, halflength);
+    // this method checks, which node should be filled
+    public void findNode(CelestialBody b)
+    {
+        if(b.getPosition().getX()<x)
+        {
+            if(b.getPosition().getY()<y)
+            {
+                if(b.getPosition().getZ()<z)
+                {
+                    //6
+                    if(this.children[6] == null)
+                    {
+                        this.children[6] = new Node(b, x - (length / 4), y - (length / 4), z - (length / 4),
+                                (length / 2));
                     }
-                } else {
-                    if (children[4] == null) { //children[4]: (x,y,z)=(+,+,-)
-                        children[4] = new Node(b);
-                        if (body != null) {
-                            CelestialBody body1 = new CelestialBody(body);
-                            body = null;
-                            hilf = false;
-                            add(body1, punktX, punktY, punktZ, length);
-                        }
-                    } else {
-                        children[4].hilf = true;
-                        children[4].add(b, punktX + halflength,
-                                punktY + halflength,
-                                punktZ - halflength, halflength);
+                    else {
+                        this.children[6].add(b);
                     }
                 }
-            } else {
-                if (b.getPosition().getZ() >= punktZ) {
-                    if (children[3] == null) { //children[3]: (x,y,z)=(+,-,+)
-                        children[3] = new Node(b);
-                        if (body != null) {
-                            CelestialBody body1 = new CelestialBody(body);
-                            body = null;
-                            hilf = false;
-                            add(body1, punktX, punktY, punktZ, length);
-                        }
-                    } else {
-                        children[3].hilf = true;
-                        children[3].add(b, punktX + halflength,
-                                punktY - halflength,
-                                punktZ + halflength, halflength);
+                else
+                {
+                    //2
+                    if(this.children[2] == null)
+                    {
+                        this.children[2] = new Node(b, x - (length / 4), y - (length / 4), z + (length / 4),
+                                (length / 2));
                     }
-                } else {
-                    if (children[7] == null) { //children[7]: (x,y,z)=(+,-,-)
-                        children[7] = new Node(b);
-                        if (body != null) {
-                            CelestialBody body1 = new CelestialBody(body);
-                            body = null;
-                            hilf = false;
-                            add(body1, punktX, punktY, punktZ, length);
-                        }
-                    } else {
-                        children[7].hilf = true;
-                        children[7].add(b, punktX + halflength,
-                                punktY - halflength,
-                                punktZ - halflength, halflength);
+                    else {
+                        this.children[2].add(b);
                     }
                 }
             }
-        } else {
-            if (b.getPosition().getY() >= punktY) {
-                if (b.getPosition().getZ() >= punktZ) {
-                    if (children[1] == null) { //children[1]: (x,y,z)=(-,+,+)
-                        children[1] = new Node(b);
-                        if (body != null) {
-                            CelestialBody body1 = new CelestialBody(body);
-                            body = null;
-                            hilf = false;
-                            add(body1, punktX, punktY, punktZ, length);
-                        }
-                    } else {
-                        children[1].hilf = true;
-                        children[1].add(b, punktX - halflength,
-                                punktY + halflength,
-                                punktZ + halflength, halflength);
+            else
+            {
+                if(b.getPosition().getZ()<z)
+                {
+                    //5
+                    if(this.children[5] == null)
+                    {
+                        this.children[5] = new Node(b,x - (length / 4), y + (length / 4), z - (length / 4),
+                                (length / 2));
                     }
-                } else {
-                    if (children[5] == null) { //children[5]: (x,y,z)=(-,+,-)
-                        children[5] = new Node(b);
-                        if (body != null) {
-                            CelestialBody body1 = new CelestialBody(body);
-                            body = null;
-                            hilf = false;
-                            add(body1, punktX, punktY, punktZ, length);
-                        }
-                    } else {
-                        children[5].hilf = true;
-                        children[5].add(b, punktX - halflength,
-                                punktY + halflength,
-                                punktZ - halflength, halflength);
+                    else {
+                        this.children[5].add(b);
                     }
                 }
-            } else {
-                if (b.getPosition().getZ() >= punktZ) {
-                    if (children[2] == null) { //children[2]: (x,y,z)=(-,-,+)
-                        children[2] = new Node(b);
-                        if (body != null) {
-                            CelestialBody body1 = new CelestialBody(body);
-                            body = null;
-                            hilf = false;
-                            add(body1, punktX, punktY, punktZ, length);
-                        }
-                    } else {
-                        children[2].hilf = true;
-                        children[2].add(b, punktX - halflength,
-                                punktY - halflength,
-                                punktZ + halflength, halflength);
+                else
+                {
+                    //1
+                    if(this.children[1] == null)
+                    {
+                        this.children[1] = new Node(b, x - (length / 4), y + (length / 4), z + (length / 4),
+                                (length / 2));
                     }
-                } else {
-                    if (children[6] == null) { //children[6]: (x,y,z)=(-,-,-)
-                        children[6] = new Node(b);
-                        if (body != null) {
-                            CelestialBody body1 = new CelestialBody(body);
-                            body = null;
-                            hilf = false;
-                            add(body1, punktX, punktY, punktZ, length);
-                        }
-                    } else {
-                        children[6].hilf = true;
-                        children[6].add(b, punktX - halflength,
-                                punktY - halflength,
-                                punktZ - halflength, halflength);
+                    else {
+                        this.children[1].add(b);
+                    }
+                }
+            }
+        }
+        else
+        {
+            if(b.getPosition().getY()<y)
+            {
+                if(b.getPosition().getZ()<z)
+                {
+                    //7
+                    if(this.children[7] == null)
+                    {
+                        this.children[7] = new Node(b, x + (length / 4), y - (length / 4), z - (length / 4),
+                                (length / 2));
+                    }
+                    else {
+                        this.children[7].add(b);
+                    }
+                }
+                else
+                {
+                    //3
+                    if(this.children[3] == null)
+                    {
+                        this.children[3] = new Node(b, x + (length / 4), y - (length / 4), z + (length / 4),
+                                (length / 2));
+                    }
+                    else {
+                        this.children[3].add(b);
+                    }
+                }
+            }
+            else
+            {
+                if(b.getPosition().getZ()<z)
+                {
+                    //4
+                    if(this.children[4] == null)
+                    {
+                        this.children[4] = new Node(b, x + (length / 4), y + (length / 4), z - (length / 4),
+                                (length / 2));
+                    }
+                    else {
+                        this.children[4].add(b);
+                    }
+                }
+                else
+                {
+                    //0
+                    if(this.children[0] == null)
+                    {
+                        this.children[0] = new Node(b, x + (length / 4), y + (length / 4), z + (length / 4),
+                                (length / 2));
+                    }
+                    else {
+                        this.children[0].add(b);
                     }
                 }
             }
         }
     }
+
+
 
     // iterate over every body to calculate force for every body
     public Vector3 calculateForce(CelestialBody body, double length)
@@ -209,7 +219,7 @@ public class Node {
         double min = 0.5;
 
         // s = width of the region of the node
-        double s = length;
+        double s = this.length;
 
         // d = distance between body and nodes center of mass
         double d = this.schwerpunkt.distanceTo(body.getPosition());
@@ -217,15 +227,7 @@ public class Node {
         Vector3 force = new Vector3(0,0,0);
 
         // check if node is external node
-        boolean externalNode = true;
-        for(int i = 0; i<8; i++)
-        {
-            if(this.children[i] != null)
-            {
-                externalNode = false;
-                break;
-            }
-        }
+        boolean externalNode = isExternal();
 
         // if externalNode, calculate force and return
         if(externalNode && d!=0)
@@ -234,36 +236,34 @@ public class Node {
                     this.schwerpunkt, new Vector3(0,0,0), Color.GRAY);
             force = body.gravitationalForce(bodytmp);
             return force;
-        }
 
+        }
         // if not external node:
-
-        // calculate ratio s/d for every child
-
-        for(int i = 0; i<8; i++)
+        // calculate ratio s/d for the node
+        else if ((s / d) < min)
         {
-            // if children not null
-            if(this.children[i] != null)
-            {
-                // if s/d < min, treat this node as single body and calculate force
-                if (s / d < min)
-                {
-                    // TODO calculate force
-                    CelestialBody bodytmp = new CelestialBody("name", this.gesamtmasse, 1,
-                            this.schwerpunkt, new Vector3(0,0,0), Color.GRAY);
-                    force = body.gravitationalForce(bodytmp);
-                    return force;
-                }
-                // if s/d < min, recursively call calculateForce on child node
-                return force.plus(children[i].calculateForce(body, length/2));
-            }
+            // TODO calculate force
+            CelestialBody bodytmp = new CelestialBody("name", this.gesamtmasse, 1,
+                    this.schwerpunkt, new Vector3(0,0,0), Color.GRAY);
+            force = body.gravitationalForce(bodytmp);
+            return force;
         }
-        return force;
+        else {
+            for(int i = 0; i<8; i++)
+            {
+                // if children not null
+                if(this.children[i] != null)
+                {
+                    // if s/d > min, recursively call calculateForce on child node
+                    force = force.plus(children[i].calculateForce(body, length / 2));
+                }
+            }
+            return force;
+        }
     }
 
     public void calculateForce(Node root)
     {
-
         for(int i = 0; i<8; i++)
         {
             if(this.children[i] != null)
@@ -275,7 +275,7 @@ public class Node {
                 {
                     Vector3 force = root.calculateForce(this.children[i].body, 150e9);
                     this.children[i].body.move(force);
-                    //this.children[i].body.draw();
+                    this.children[i].body.draw();
                 }
                 // else go to child note
                 else {
@@ -319,7 +319,6 @@ public class Node {
                 break;
             }
         }
-
         return externalNode;
     }
 

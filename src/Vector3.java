@@ -43,7 +43,8 @@ public class Vector3 {
     }
 
     // Returns the sum of this vector and vector 'v'.
-    public Vector3 plus(Vector3 v) {
+    public Vector3 plus(Vector3 v)
+    {
         return new Vector3(this.x + v.x, this.y + v.y, this.z + v.z);
     }
 

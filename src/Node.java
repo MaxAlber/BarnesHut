@@ -4,39 +4,26 @@ public class Node {
     public static final double AU = 150e9;
 
     private CelestialBody body;
-    private double gesamtmasse; //Gesamtmasse vom Teilbaum
-    private Vector3 schwerpunkt; //Schwerpunkt vom Teilbaum
+    private double totalMass; //Gesamtmasse vom Teilbaum
+    private Vector3 centerOfMass; //Schwerpunkt vom Teilbaum
     private Node[] children = new Node[8]; //8 Knoten je Ebene
 
     private double x,y,z, length;
 
 
     /*
-     *children[0]: (x,y,z)=(+,+,+)
-     *children[1]: (x,y,z)=(-,+,+)
-     *children[2]: (x,y,z)=(-,-,+)
-     *children[3]: (x,y,z)=(+,-,+)
+     *children[0]: (x,y,z)=(-,-,-) 000
+     *children[1]: (x,y,z)=(-,-,+) 001
+     *children[2]: (x,y,z)=(-,+,-) 010
+     *children[3]: (x,y,z)=(-,+,+) 011
      *
-     *children[4]: (x,y,z)=(+,+,-)
-     *children[5]: (x,y,z)=(-,+,-)
-     *children[6]: (x,y,z)=(-,-,-)
-     *children[7]: (x,y,z)=(+,-,-)
-     *
-     * in add() Methode:
-     * + bedeutet: body.x > PunktX
-     * - bedeutet: body.x < PunktX
+     *children[4]: (x,y,z)=(+,-,-) 100
+     *children[5]: (x,y,z)=(+,-,+) 101
+     *children[6]: (x,y,z)=(+,+,-) 110
+     *children[7]: (x,y,z)=(+,+,+) 111
      */
 
-    public double getGesamtmasse() {
-        return gesamtmasse;
-    }
-
-    public Vector3 getSchwerpunkt() {
-        return schwerpunkt;
-    }
-
-    public Node(CelestialBody body, double x, double y, double z, double length)
-    {
+    public Node(CelestialBody body, double x, double y, double z, double length) {
         /*
         StdDraw.setPenColor(Color.white);
         StdDraw.circle(x,y,20);
@@ -46,8 +33,8 @@ public class Node {
         StdDraw.line(x-length/2, y-length/2, x-length/2, y+length/2);
         */
         this.body = body;
-        this.gesamtmasse = body.getMass();
-        this.schwerpunkt = new Vector3(body.getPosition()); //// neue Vector3 erzeugen, vermeiden Identität Problem
+        this.totalMass = body.mass();
+        this.centerOfMass = new Vector3(body.position()); //// neue Vector3 erzeugen, vermeiden Identität Problem
         this.x = x;
         this.y = y;
         this.z = z;
@@ -56,17 +43,14 @@ public class Node {
 
     // this method calculates the schwerpunkt and gesamtmasse
     private void calcmass(CelestialBody b) { //berechnen Gesamtmasse und Schwerpunkt der Node
-        this.gesamtmasse = this.gesamtmasse + b.getMass();
-
+        this.totalMass = this.totalMass + b.mass();
         double x, y, z;
-        x = (this.schwerpunkt.getX() * (this.gesamtmasse - b.getMass()) + b.getPosition().getX() * b.getMass()) /
-                this.gesamtmasse;
-        y = (this.schwerpunkt.getY() * (this.gesamtmasse - b.getMass()) + b.getPosition().getY() * b.getMass()) /
-                this.gesamtmasse;
-        z = (this.schwerpunkt.getZ() * (this.gesamtmasse - b.getMass()) + b.getPosition().getZ() * b.getMass()) /
-                this.gesamtmasse;
 
-        this.schwerpunkt = new Vector3(x, y, z);
+        x = (this.centerOfMass.x() * (this.totalMass - b.mass()) + b.x() * b.mass()) / this.totalMass;
+        y = (this.centerOfMass.y() * (this.totalMass - b.mass()) + b.y() * b.mass()) / this.totalMass;
+        z = (this.centerOfMass.z() * (this.totalMass - b.mass()) + b.z() * b.mass()) / this.totalMass;
+
+        this.centerOfMass = new Vector3(x, y, z);
 
     }
 
@@ -81,8 +65,8 @@ public class Node {
         else if(this.isExternal())
         {
             CelestialBody b1 = this.body;
-            this.gesamtmasse = 0;
-            this.schwerpunkt = new Vector3(0,0,0);
+            this.totalMass = 0;
+            this.centerOfMass = new Vector3(0,0,0);
             this.findNode(b1);
             this.findNode(b);
             this.calcmass(b1);
@@ -93,11 +77,11 @@ public class Node {
     // this method checks, which node should be filled
     public void findNode(CelestialBody b)
     {
-        if(b.getPosition().getX()<x)
+        if(b.x()<x)
         {
-            if(b.getPosition().getY()<y)
+            if(b.y()<y)
             {
-                if(b.getPosition().getZ()<z)
+                if(b.z()<z)
                 {
                     //6
                     if(this.children[6] == null)
@@ -124,7 +108,7 @@ public class Node {
             }
             else
             {
-                if(b.getPosition().getZ()<z)
+                if(b.z()<z)
                 {
                     //5
                     if(this.children[5] == null)
@@ -152,9 +136,9 @@ public class Node {
         }
         else
         {
-            if(b.getPosition().getY()<y)
+            if(b.y()<y)
             {
-                if(b.getPosition().getZ()<z)
+                if(b.z()<z)
                 {
                     //7
                     if(this.children[7] == null)
@@ -181,7 +165,7 @@ public class Node {
             }
             else
             {
-                if(b.getPosition().getZ()<z)
+                if(b.z()<z)
                 {
                     //4
                     if(this.children[4] == null)
@@ -222,7 +206,7 @@ public class Node {
         double s = this.length;
 
         // d = distance between body and nodes center of mass
-        double d = this.schwerpunkt.distanceTo(body.getPosition());
+        double d = this.centerOfMass.distanceTo(body.position());
 
         Vector3 force = new Vector3(0,0,0);
 
@@ -232,8 +216,8 @@ public class Node {
         // if externalNode, calculate force and return
         if(externalNode && d!=0)
         {
-            CelestialBody bodytmp = new CelestialBody("name", this.gesamtmasse, 1,
-                    this.schwerpunkt, new Vector3(0,0,0), Color.GRAY);
+            CelestialBody bodytmp = new CelestialBody("name", this.totalMass, 1,
+                    this.centerOfMass, new Vector3(0,0,0), Color.GRAY);
             force = body.gravitationalForce(bodytmp);
             return force;
 
@@ -243,8 +227,8 @@ public class Node {
         else if ((s / d) < min)
         {
             // TODO calculate force
-            CelestialBody bodytmp = new CelestialBody("name", this.gesamtmasse, 1,
-                    this.schwerpunkt, new Vector3(0,0,0), Color.GRAY);
+            CelestialBody bodytmp = new CelestialBody("name", this.totalMass, 1,
+                    this.centerOfMass, new Vector3(0,0,0), Color.GRAY);
             force = body.gravitationalForce(bodytmp);
             return force;
         }

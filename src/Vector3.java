@@ -6,29 +6,7 @@ public class Vector3 {
     private double y;
     private double z;
 
-    public double getX() {
-        return x;
-    }
 
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public double getZ() {
-        return z;
-    }
-
-    public void setZ(double z) {
-        this.z = z;
-    }
 
     public Vector3(double x, double y, double z) {
         this.x = x;
@@ -37,9 +15,19 @@ public class Vector3 {
     }
 
     public Vector3(Vector3 vec) {
-        this.x = vec.getX();
-        this.y = vec.getY();
-        this.z = vec.getZ();
+        this.x = vec.x;
+        this.y = vec.y;
+        this.z = vec.z;
+    }
+
+    public double x(){
+        return x;
+    }
+    public double y(){
+        return y;
+    }
+    public double z(){
+        return z;
     }
 
     // Returns the sum of this vector and vector 'v'.

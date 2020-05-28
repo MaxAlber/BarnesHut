@@ -14,9 +14,6 @@ public class Tree {
         }
     }
 
-    public Node getRoot() {
-        return root;
-    }
     public void calculateForces()
     {
         root.calculateForce(root);

@@ -23,35 +23,25 @@ public class CelestialBody {
         this.color = color;
     }
 
-    public CelestialBody(CelestialBody body) {
-        this.name = body.name;
-        this.mass = body.mass;
-        this.radius = body.radius;
-        this.position = body.position;
-        this.velocity = body.velocity;
-        this.color = body.color;
-    }
 
-    public Vector3 getVelocity() {
-        return velocity;
-    }
-
-    public Vector3 getPosition() {
+    public Vector3 position() {
         return position;
     }
 
-    public double getMass() {
+    public double x(){
+        return position.x();
+    }
+
+    public double y(){
+        return position.y();
+    }
+
+    public double z(){
+        return position.x();
+    }
+
+    public double mass() {
         return mass;
-    }
-
-    public double distanceTo(CelestialBody body) {
-        return this.position.distanceTo(body.position);
-    }
-
-    public void resetForce() {
-        position.setX(0);
-        position.setY(0);
-        position.setZ(0);
     }
 
     // Returns a vector representing the gravitational force exerted by 'body' on this celestial body.

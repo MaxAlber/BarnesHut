@@ -24,23 +24,24 @@ public class CelestialBody {
     }
 
 
-    public Vector3 position() {
+    public Vector3 getPosition()
+    {
         return position;
     }
 
     public double x(){
-        return position.x();
+        return position.getX();
     }
 
     public double y(){
-        return position.y();
+        return position.getY();
     }
 
     public double z(){
-        return position.x();
+        return position.getZ();
     }
 
-    public double mass() {
+    public double getMass() {
         return mass;
     }
 

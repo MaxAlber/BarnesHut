@@ -30,7 +30,8 @@ public class Simulation {
             StdDraw.clear(StdDraw.BLACK);
             testTree.calculateForces();
             testTree = new Tree();
-            for(int i = 0; i<n; i++) {
+            for(int i = 0; i<n; i++)
+            {
                 if(bodies[i].x()<5*AU && bodies[i].y() <5*AU && bodies[i].z()<5*AU
                         && bodies[i].x()>-5*AU && bodies[i].y()>-5*AU && bodies[i].z()>-5*AU)
                     testTree.add(bodies[i]);

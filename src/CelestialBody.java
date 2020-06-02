@@ -29,18 +29,6 @@ public class CelestialBody {
         return position;
     }
 
-    public double x(){
-        return position.getX();
-    }
-
-    public double y(){
-        return position.getY();
-    }
-
-    public double z(){
-        return position.getZ();
-    }
-
     public double getMass() {
         return mass;
     }
@@ -73,15 +61,6 @@ public class CelestialBody {
         return name + ", " + mass + " kg, radius: " + radius + " m, position: " + position.toString() +
                 " m, movement: " + velocity.toString() + " m/s.";
     }
-
-
-    // Prints the information about this celestial body including
-    // name, mass, radius, position and current movement, to the console (without newline).
-    // Earth, 5.972E24 kg, radius: 6371000.0 m, position: [1.48E11,0.0,0.0] m, movement: [0.0,29290.0,0.0] m/s.
-    public void print() {
-        System.out.print(toString());
-    }
-
 
     // Draws the celestial body to the current StdDraw canvas as a dot using 'color' of this body.
     // The radius of the dot is in relation to the radius of the celestial body

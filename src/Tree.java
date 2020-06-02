@@ -7,7 +7,8 @@ public class Tree {
     {
         if (root == null)
         {
-            root = new InternalNode(b, new Vector3(0,0,0), 10*AU);
+            root = new InternalNode(new Vector3(0,0,0), 10*AU);
+            root.add(b);
         } else
         {
             root.add(b);

@@ -101,7 +101,7 @@ public class Vector3 {
 
         //TODO: implement method.
         StdDraw.setPenColor(color);
-        StdDraw.filledCircle(x, y, radius);
+        StdDraw.point(x, y);
 
     }
 

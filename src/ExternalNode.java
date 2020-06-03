@@ -4,21 +4,19 @@ public class ExternalNode implements Node
 {
 
     private final CelestialBody body;
-    private final Node[] children = new ExternalNode[8];
 
     public ExternalNode(CelestialBody body, Vector3 position, double length)
     {
         this.body = body;
-        Vector3 position1 = new Vector3(0, 0, 0);
-        position1.setX(position.getX());
-        position1.setY(position.getY());
-        position1.setZ(position.getZ());
     }
 
     @Override
-    public void add(CelestialBody b)
+    public Node add(CelestialBody b, Vector3 position, double length)
     {
-
+        InternalNode newnode = new InternalNode(position, length);
+        newnode.add(b, new Vector3(0,0,0), length);
+        newnode.add(this.body, new Vector3(0,0,0), length);
+        return newnode;
     }
 
     @Override
@@ -26,7 +24,8 @@ public class ExternalNode implements Node
     {
         Vector3 force = new Vector3(0,0,0);
 
-        if(this.body.getPosition().distanceTo(body.getPosition())!=0) {
+        if(this.body.getPosition().distanceTo(body.getPosition())!=0)
+        {
             // calculate force and return
             CelestialBody bodytmp = new CelestialBody("name",
                     this.body.getMass(),
@@ -45,12 +44,14 @@ public class ExternalNode implements Node
         return true;
     }
 
-    @Override
-    public void calculateForces(InternalNode root) {
-    }
-
     public CelestialBody getBody()
     {
         return this.body;
+    }
+
+    @Override
+    public void calculateForces(Node node)
+    {
+
     }
 }

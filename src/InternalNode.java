@@ -32,20 +32,32 @@ public class InternalNode implements Node
 
     public InternalNode(Vector3 position, double length)
     {
-        /*
+
         StdDraw.setPenColor(Color.white);
-        StdDraw.circle(x,y,20);
-        StdDraw.line(x-length/2, y+length/2, x+length/2, y+length/2);
-        StdDraw.line(x+length/2, y+length/2, x+length/2, y-length/2);
-        StdDraw.line(x+length/2, y-length/2, x-length/2, y-length/2);
-        StdDraw.line(x-length/2, y-length/2, x-length/2, y+length/2);
-         */
+        //StdDraw.circle(position.getX(),position.getY(),20);
+        /*
+        StdDraw.line(position.getX()-length/2, position.getY()+length/2,
+                position.getX()+length/2, position.getY()+length/2);
+        StdDraw.line(position.getX()+length/2, position.getY()+length/2,
+                position.getX()+length/2, position.getY()-length/2);
+        StdDraw.line(position.getX()+length/2, position.getY()-length/2,
+                position.getX()-length/2, position.getY()-length/2);
+        StdDraw.line(position.getX()-length/2, position.getY()-length/2,
+                position.getX()-length/2, position.getY()+length/2);
+        */
 
         this.centerOfMass = new Vector3(0,0,0);
+
+        //TODO this.position = position
         this.position.setX(position.getX());
         this.position.setY(position.getY());
         this.position.setZ(position.getZ());
         this.length = length;
+
+        for(int i = 0; i<8; i++)
+        {
+            this.children[i] = new NullNode();
+        }
     }
 
     // this method calculates the schwerpunkt and gesamtmasse
@@ -67,63 +79,45 @@ public class InternalNode implements Node
     // this methods adds bodys to the tree
 
     // this method checks, which node should be filled
-    public void add(CelestialBody b)
+    public Node add(CelestialBody b, Vector3 vector3, double length)
     {
+
         int index = 7;
         Vector3 newposition = new Vector3(
-                position.getX() + length/4,
-                position.getY() + length/4,
-                position.getZ() + length/4);
+                this.position.getX() + this.length/4,
+                this.position.getY() + this.length/4,
+                this.position.getZ() + this.length/4);
 
-        if(b.getPosition().getX()<position.getX())
+        if(b.getPosition().getX()<this.position.getX())
         {
             // if body.x < x, subtract 4 from index
             index = index - 4;
 
             // calculate new x position
-            newposition.setX(position.getX() - (length / 4));
+            newposition.setX(this.position.getX() - (this.length / 4));
         }
 
-        if(b.getPosition().getY()<position.getY())
+        if(b.getPosition().getY()<this.position.getY())
         {
             // if body.y < y, subtract 2 from index
             index = index - 2;
 
             // calculate new y position
-            newposition.setY(position.getY() - (length / 4));
+            newposition.setY(this.position.getY() - (this.length / 4));
         }
 
-        if(b.getPosition().getZ()<position.getZ())
+        if(b.getPosition().getZ()<this.position.getZ())
         {
             // if body.z < z, subtract 1 from index
             index = index - 1;
 
             // calculate new z position
-            newposition.setZ(position.getZ() - (length / 4));
+            newposition.setZ(this.position.getZ() - (this.length / 4));
         }
 
-        // add to node
-        if(this.children[index] == null)
-        {
-            this.children[index] = new ExternalNode(b, newposition, (length / 2));
-            this.calcmass(b);
-        }
-        else
-            {
-            if(this.children[index].isExternal())
-            {
-                this.calcmass(b);
-                CelestialBody b1 = this.children[index].getBody();
-                this.children[index] = new InternalNode(newposition, length/2);
-                this.children[index].add(b);
-                this.children[index].add(b1);
-            }
-            else
-            {
-                this.calcmass(b);
-                this.children[index].add(b);
-            }
-        }
+        this.calcmass(b);
+        this.children[index] = this.children[index].add(b, newposition, this.length/2);
+        return this;
     }
 
 
@@ -158,38 +152,11 @@ public class InternalNode implements Node
         else {
             for(int i = 0; i<8; i++)
             {
-                // if children not null
-                if(this.children[i] != null)
-                {
-                    // if s/d > min, recursively call calculateForce on
-                    // child node
-                    force = force.plus(children[i].calculateForce(body));
-                }
+                // if s/d > min, recursively call calculateForce on
+                // child node
+                force = force.plus(children[i].calculateForce(body));
             }
             return force;
-        }
-    }
-
-    public void calculateForces(InternalNode root)
-    {
-        for(int i = 0; i<8; i++)
-        {
-            if(this.children[i] != null)
-            {
-                // check if node is external node
-                boolean externalNode = this.children[i].isExternal();
-
-                if (externalNode)
-                {
-                    Vector3 force = root.calculateForce(this.children[i].getBody());
-                    this.children[i].getBody().move(force);
-                    this.children[i].getBody().draw();
-                }
-                // else go to child note
-                else {
-                    this.children[i].calculateForces(root);
-                }
-            }
         }
     }
 
@@ -202,5 +169,27 @@ public class InternalNode implements Node
     public CelestialBody getBody()
     {
         return null;
+    }
+
+    @Override
+    public void calculateForces(Node root)
+    {
+        for(int i = 0; i<8; i++)
+        {
+            // check if node is external node
+            boolean externalNode = this.children[i].isExternal();
+
+            if (externalNode)
+            {
+                Vector3 force = root.calculateForce(this.children[i].getBody());
+                this.children[i].getBody().move(force);
+                this.children[i].getBody().draw();
+            }
+            // else go to child note
+            else {
+                this.children[i].calculateForces(root);
+            }
+
+        }
     }
 }

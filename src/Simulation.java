@@ -17,7 +17,7 @@ public class Simulation {
         // generate bodies
         for(int i = 0; i<n; i++)
         {
-            bodies[i] = new CelestialBody("b"+i, Math.random()*2e36, 1,
+            bodies[i] = new CelestialBody("b"+i, Math.random()*1e36, 1,
                     new Vector3(Math.random()*AU*4-AU, Math.random()*AU*3-AU, Math.random()*AU*3-AU),
                     new Vector3(-AU/400,-AU/400,-AU/400), StdDraw.WHITE);
             testTree.add(bodies[i]);
@@ -30,6 +30,9 @@ public class Simulation {
         StdDraw.enableDoubleBuffering();
         StdDraw.clear(StdDraw.BLACK);
 
+        testTree.calculateForces();
+        StdDraw.show();
+
 
 
         // this loop is the simulation loop
@@ -39,7 +42,6 @@ public class Simulation {
             StdDraw.clear(StdDraw.BLACK);
             testTree.calculateForces();
             testTree = new Tree();
-
 
             for(int i = 0; i<n; i++)
             {
@@ -52,6 +54,8 @@ public class Simulation {
 
             StdDraw.show();
         }
+
+
 
     }
 }

@@ -62,7 +62,7 @@ public class CelestialBody {
     // (use a conversion based on the logarithm as in 'Simulation.java').
     public void draw()
     {
-        position.drawAsDot(1e9 * Math.log10(1), Color.white);
+        position.drawAsDot(Color.white);
     }
 
 }

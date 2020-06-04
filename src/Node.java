@@ -1,9 +1,9 @@
 import java.awt.*;
+import java.util.Iterator;
+import java.util.Stack;
 
 public interface Node
 {
-    CelestialBody body = null;
-
     // adds a body to the tree
     Node add(CelestialBody b, Vector3 vector, double length);
 
@@ -11,11 +11,8 @@ public interface Node
     // and returns the force
     Vector3 calculateForce(CelestialBody body);
 
-    // returns the body of a Node
-    CelestialBody getBody();
-
-    // TODO add iterator to tree instead
-    void calculateForces(Node node);
-
-    boolean isExternal();
+    // iterates over the subtree of this node and adds the bodies in the nodes
+    // to the stack in the parameter
+    // this method is used to generate a iterator over the octree with a stack
+    Stack iterate(Stack<CelestialBody> stack);
 }

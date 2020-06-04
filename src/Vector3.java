@@ -67,14 +67,12 @@ public class Vector3 {
     // to the specified vector 'v'.
     public double distanceTo(Vector3 v) {
 
-        //TODO: implement method.
         return this.minus(v).length();
     }
 
     // Returns the length (norm) of this vector.
     public double length() {
 
-        //TODO: implement method.
         Vector3 result = new Vector3(this.x, this.y, this.z);
         double dX = result.x;
         double dY = result.y;
@@ -87,7 +85,6 @@ public class Vector3 {
     // The direction and orientation of the vector is not affected.
     public void normalize() {
 
-        //TODO: implement method.
         double length = length();
         this.x /= length;
         this.y /= length;
@@ -97,9 +94,8 @@ public class Vector3 {
 
     // Draws a filled circle with the center at (x,y) coordinates of this vector
     // in the existing StdDraw canvas. The z-coordinate is not used.
-    public void drawAsDot(double radius, Color color) {
+    public void drawAsDot(Color color) {
 
-        //TODO: implement method.
         StdDraw.setPenColor(color);
         StdDraw.point(x, y);
 

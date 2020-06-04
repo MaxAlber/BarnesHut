@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Stack;
 
 public class LeafNode implements Node
 {
@@ -41,20 +42,10 @@ public class LeafNode implements Node
         return force;
     }
 
+    // adds the body to the stack and returns the stack
     @Override
-    public boolean isExternal()
-    {
-        return true;
-    }
-
-    public CelestialBody getBody()
-    {
-        return this.body;
-    }
-
-    @Override
-    public void calculateForces(Node node)
-    {
-
+    public Stack iterate(Stack<CelestialBody> stack) {
+        stack.push(this.body);
+        return stack;
     }
 }

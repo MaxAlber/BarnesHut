@@ -37,15 +37,24 @@ public class Simulation {
         {
             StdDraw.clear(StdDraw.BLACK);
             testTree.calculateForces();
+
+            OctreeIterator iterator = testTree.iterator();
+
             testTree = new Tree();
 
-            for(int i = 0; i<n; i++)
+
+            while(iterator.hasNext())
             {
-                if(bodies[i].getPosition().getX()<5*AU && bodies[i].getPosition().getY() <5*AU &&
-                        bodies[i].getPosition().getZ()<5*AU
-                        && bodies[i].getPosition().getX()>-5*AU && bodies[i].getPosition().getY()>-5*AU &&
-                        bodies[i].getPosition().getZ()>-5*AU)
-                    testTree.add(bodies[i]);
+                CelestialBody next = iterator.next();
+                if(next.getPosition().getX()<5*AU &&
+                        next.getPosition().getY() <5*AU &&
+                        next.getPosition().getZ()<5*AU &&
+                        next.getPosition().getX()>-5*AU &&
+                        next.getPosition().getY()>-5*AU &&
+                        next.getPosition().getZ()>-5*AU)
+                {
+                    testTree.add(next);
+                }
             }
 
             StdDraw.show();

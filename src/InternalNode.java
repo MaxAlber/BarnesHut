@@ -1,4 +1,4 @@
-import java.awt.*;
+import java.util.Stack;
 
 public class InternalNode implements Node
 {
@@ -10,7 +10,7 @@ public class InternalNode implements Node
     private Vector3 centerOfMass;
 
     // all nodes of this subtree
-    private final Node[] children = new Node[8];
+    public final Node[] children = new Node[8];
 
     // the length of this node (length of the octree field)
     private final double length;
@@ -169,36 +169,25 @@ public class InternalNode implements Node
         }
     }
 
-    // method checks if node is an external node
-    public boolean isExternal()
+    // iterates over all subtrees and adds all the bodies to the stack
+    public Stack<CelestialBody> iterate(Stack<CelestialBody> stack)
     {
-        return false;
+        for(int i = 0; i<8; i++) {
+            stack = this.children[i].iterate(stack);
+        }
+        return stack;
     }
 
-    public CelestialBody getBody()
+    public void calculateForces(Node root, OctreeIterator iterator)
     {
-        return null;
-    }
 
-    @Override
-    public void calculateForces(Node root)
-    {
-        for(int i = 0; i<8; i++)
+        while(iterator.hasNext())
         {
-            // check if node is external node
-            boolean externalNode = this.children[i].isExternal();
-
-            if (externalNode)
-            {
-                Vector3 force = root.calculateForce(this.children[i].getBody());
-                this.children[i].getBody().move(force);
-                this.children[i].getBody().draw();
-            }
-            // else go to child note
-            else {
-                this.children[i].calculateForces(root);
-            }
-
+            CelestialBody body = iterator.next();
+            Vector3 force = root.calculateForce(body);
+            body.move(force);
+            body.draw();
         }
     }
+
 }

@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 public class NullNode implements Node
 {
 
@@ -16,21 +18,9 @@ public class NullNode implements Node
         return new Vector3(0,0,0);
     }
 
+    // returns the stack, since there is no body to add
     @Override
-    public CelestialBody getBody()
-    {
-        return null;
-    }
-
-    @Override
-    public void calculateForces(Node node)
-    {
-
-    }
-
-    @Override
-    public boolean isExternal()
-    {
-        return false;
+    public Stack iterate(Stack<CelestialBody> stack) {
+        return stack;
     }
 }

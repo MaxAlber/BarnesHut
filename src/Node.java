@@ -1,5 +1,3 @@
-import java.awt.*;
-import java.util.Iterator;
 import java.util.Stack;
 
 public interface Node

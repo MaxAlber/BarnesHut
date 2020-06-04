@@ -1,13 +1,12 @@
 import java.awt.*;
 
-
 public class CelestialBody {
 
     // gravitational constant
     public static final double G = 6.6743e-11;
 
-    private String name;
-    private double mass;
+    private final String name;
+    private final double mass;
     private Vector3 position; // position of the center.
     private Vector3 velocity;
 

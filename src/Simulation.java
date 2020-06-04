@@ -35,14 +35,20 @@ public class Simulation {
         // the forces are calculated and a new octree with new positions is created repeatedly
         while(true)
         {
+            // clear the canvas
             StdDraw.clear(StdDraw.BLACK);
+
+            // calculating the new positions for the bodies
             testTree.calculateForces();
 
+            // generating iterator, to generate new tree
             OctreeIterator iterator = testTree.iterator();
 
             testTree = new Tree();
 
-
+            // iterating over all bodies and adding them to the new tree
+            // the if checks if the bodies are still inside the octree
+            // if not, they are no longer added to the octree
             while(iterator.hasNext())
             {
                 CelestialBody next = iterator.next();
@@ -57,6 +63,7 @@ public class Simulation {
                 }
             }
 
+            // show the bodies
             StdDraw.show();
         }
 

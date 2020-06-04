@@ -178,6 +178,7 @@ public class InternalNode implements Node
         return stack;
     }
 
+    // iterates over all the bodies and calculates the force on the bodies
     public void calculateForces(Node root, OctreeIterator iterator)
     {
 

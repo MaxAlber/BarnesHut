@@ -8,19 +8,14 @@ public class CelestialBody {
 
     private String name;
     private double mass;
-    private double radius;
     private Vector3 position; // position of the center.
     private Vector3 velocity;
-    private Color color; // for drawing the body.
 
-    public CelestialBody(String name, double mass, double radius, Vector3 position,
-                         Vector3 velocity, Color color) {
+    public CelestialBody(String name, double mass, Vector3 position) {
         this.name = name;
         this.mass = mass;
-        this.radius = radius;
         this.position = position;
-        this.velocity = velocity;
-        this.color = color;
+        this.velocity = new Vector3(0,0,0);
     }
 
 
@@ -38,7 +33,7 @@ public class CelestialBody {
         Vector3 direction = body.position.minus(this.position);
         double r = direction.length();
         direction.normalize();
-        double force = Simulation.G * this.mass * body.mass / (r * r);
+        double force = G * this.mass * body.mass / (r * r);
         return direction.times(force);
     }
 
@@ -58,7 +53,7 @@ public class CelestialBody {
     // name, mass, radius, position and current movement. Example:
     // "Earth, 5.972E24 kg, radius: 6371000.0 m, position: [1.48E11,0.0,0.0] m, movement: [0.0,29290.0,0.0] m/s."
     public String toString() {
-        return name + ", " + mass + " kg, radius: " + radius + " m, position: " + position.toString() +
+        return name + ", " + mass + " kg, position: " + position.toString() +
                 " m, movement: " + velocity.toString() + " m/s.";
     }
 
@@ -67,7 +62,7 @@ public class CelestialBody {
     // (use a conversion based on the logarithm as in 'Simulation.java').
     public void draw()
     {
-        position.drawAsDot(1e9 * Math.log10(radius), color);
+        position.drawAsDot(1e9 * Math.log10(1), Color.white);
     }
 
 }

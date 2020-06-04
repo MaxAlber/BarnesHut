@@ -1,15 +1,18 @@
 import java.awt.*;
 
-public class ExternalNode implements Node
+public class LeafNode implements Node
 {
 
     private final CelestialBody body;
 
-    public ExternalNode(CelestialBody body, Vector3 position, double length)
+    public LeafNode(CelestialBody body, Vector3 position, double length)
     {
         this.body = body;
     }
 
+    // creates a new internal Node and adds the body that is given to this method as a parameter
+    // and the body of this node to the new internal Node.
+    // Then it returns the new internal Node
     @Override
     public Node add(CelestialBody b, Vector3 position, double length)
     {
@@ -19,6 +22,9 @@ public class ExternalNode implements Node
         return newnode;
     }
 
+    // calculates the force of this body on the body that is given to the method as a parameter.
+    // if the the distance of this body to the body that is given as a parameter is zero,
+    // it means they are the same body and it returns (0,0,0) as force
     @Override
     public Vector3 calculateForce(CelestialBody body)
     {
@@ -29,10 +35,7 @@ public class ExternalNode implements Node
             // calculate force and return
             CelestialBody bodytmp = new CelestialBody("name",
                     this.body.getMass(),
-                    1,
-                    this.body.getPosition(),
-                    new Vector3(0, 0, 0),
-                    Color.GRAY);
+                    this.body.getPosition());
             force = body.gravitationalForce(bodytmp);
         }
         return force;

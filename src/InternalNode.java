@@ -3,12 +3,20 @@ import java.awt.*;
 public class InternalNode implements Node
 {
 
-    private double totalMass; //Gesamtmasse vom Teilbaum
-    private Vector3 centerOfMass; //Schwerpunkt vom Teilbaum
-    private Node[] children = new Node[8]; //8 Knoten je Ebene
+    // total Mass of this subtree
+    private double totalMass;
 
-    private double length;
-    private Vector3 position = new Vector3(0,0,0);
+    // center of Mass of this subtree
+    private Vector3 centerOfMass;
+
+    // all nodes of this subtree
+    private final Node[] children = new Node[8];
+
+    // the length of this node (length of the octree field)
+    private final double length;
+
+    // the position of this node (position of octree field)
+    private final Vector3 position = new Vector3(0,0,0);
 
 
     // + = 1, - = 0;
@@ -33,8 +41,9 @@ public class InternalNode implements Node
     public InternalNode(Vector3 position, double length)
     {
 
-        StdDraw.setPenColor(Color.white);
-        //StdDraw.circle(position.getX(),position.getY(),20);
+        // uncomment this to draw the octree
+
+        //StdDraw.setPenColor(Color.white);
         /*
         StdDraw.line(position.getX()-length/2, position.getY()+length/2,
                 position.getX()+length/2, position.getY()+length/2);
@@ -60,7 +69,7 @@ public class InternalNode implements Node
         }
     }
 
-    // this method calculates the schwerpunkt and gesamtmasse
+    // this method calculates the centerOfMass and totalMass
     public void calcmass(CelestialBody b)
     {
         this.totalMass = this.totalMass + b.getMass();
@@ -76,9 +85,11 @@ public class InternalNode implements Node
         this.centerOfMass = new Vector3(x, y, z);
     }
 
-    // this methods adds bodys to the tree
-
-    // this method checks, which node should be filled
+    // this method calculates the index and adds a new body to the node with the calculated index
+    // if there is a null node, it creates a leaf node
+    // if there is a leaf node, it creates a internal node and adds both bodies (new body and body of leaf node)
+    // to the subnodes of the new internal node.
+    // if there is a internal node, it adds the body to one of the subnodes of the internal node
     public Node add(CelestialBody b, Vector3 vector3, double length)
     {
 
@@ -114,7 +125,6 @@ public class InternalNode implements Node
             // calculate new z position
             newposition.setZ(this.position.getZ() - (this.length / 4));
         }
-
         this.calcmass(b);
         this.children[index] = this.children[index].add(b, newposition, this.length/2);
         return this;
@@ -123,6 +133,7 @@ public class InternalNode implements Node
 
 
     // iterate over every body to calculate force for every body
+    // returns the force that is calculated for the body
     @Override
     public Vector3 calculateForce(CelestialBody body)
     {
@@ -136,24 +147,22 @@ public class InternalNode implements Node
         double d = this.centerOfMass.distanceTo(body.getPosition());
 
         Vector3 force = new Vector3(0,0,0);
-        // calculate ratio s/d for the node
+
+        // if s/d < min, calculate the force on the body
         if ((s / d) < min)
         {
             // TODO calculate force
             CelestialBody bodytmp = new CelestialBody("name",
                     this.totalMass,
-                    1,
-                    this.centerOfMass,
-                    new Vector3(0,0,0),
-                    Color.GRAY);
+                    this.centerOfMass);
             force = body.gravitationalForce(bodytmp);
             return force;
         }
+        // if s/d >= min, recursively call calculateForce on
+        // child node
         else {
             for(int i = 0; i<8; i++)
             {
-                // if s/d > min, recursively call calculateForce on
-                // child node
                 force = force.plus(children[i].calculateForce(body));
             }
             return force;

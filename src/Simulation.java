@@ -6,6 +6,7 @@ public class Simulation {
     // one astronomical unit (AU) is the average distance of earth to the sun.
     public static final double AU = 150e9;
 
+    // n is the number of bodys in the simulation
     public static final int n = 10000;
 
     public static void main(String[] args)
@@ -17,9 +18,8 @@ public class Simulation {
         // generate bodies
         for(int i = 0; i<n; i++)
         {
-            bodies[i] = new CelestialBody("b"+i, Math.random()*1e36, 1,
-                    new Vector3(Math.random()*AU*4-AU, Math.random()*AU*3-AU, Math.random()*AU*3-AU),
-                    new Vector3(-AU/400,-AU/400,-AU/400), StdDraw.WHITE);
+            bodies[i] = new CelestialBody("b"+i, Math.random()*1e36,
+                    new Vector3(Math.random()*AU*4-AU, Math.random()*AU*3-AU, Math.random()*AU*3-AU));
             testTree.add(bodies[i]);
         }
 
@@ -28,10 +28,6 @@ public class Simulation {
         StdDraw.setXscale(-5*AU,5*AU);
         StdDraw.setYscale(-5*AU,5*AU);
         StdDraw.enableDoubleBuffering();
-        StdDraw.clear(StdDraw.BLACK);
-
-        testTree.calculateForces();
-        StdDraw.show();
 
 
 

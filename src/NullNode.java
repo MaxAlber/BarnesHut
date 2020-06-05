@@ -20,7 +20,7 @@ public class NullNode implements Node
 
     // returns the stack, since there is no body to add
     @Override
-    public Stack iterate(Stack<CelestialBody> stack) {
+    public Stack<CelestialBody> iterate(Stack<CelestialBody> stack) {
         return stack;
     }
 }

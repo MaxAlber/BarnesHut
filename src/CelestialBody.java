@@ -7,7 +7,7 @@ public class CelestialBody {
 
     private final String name;
     private final double mass;
-    private Vector3 position; // position of the center.
+    private Vector3 position;
     private Vector3 velocity;
 
     public CelestialBody(String name, double mass, Vector3 position) {
@@ -40,7 +40,6 @@ public class CelestialBody {
     // on it, and updates the current movement accordingly.
     // (Movement depends on the mass of this body, its current movement and the exerted force.)
     public void move(Vector3 force) {
-        //Methode wird sowie move(fx,fy,fz) aus Klasse Body erstellt
         Vector3 oldPosition = this.position;
         Vector3 newPosition = this.position.plus(this.velocity).plus(force.times(1 / mass));
         velocity = newPosition.minus(oldPosition);

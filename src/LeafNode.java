@@ -2,7 +2,6 @@ import java.util.Stack;
 
 public class LeafNode implements Node
 {
-
     private final CelestialBody body;
 
     public LeafNode(CelestialBody body, Vector3 position, double length)

@@ -18,7 +18,7 @@ public class Simulation {
         // generate bodies
         for(int i = 0; i<n; i++)
         {
-            bodies[i] = new CelestialBody("b"+i, Math.random()*1e36,
+            bodies[i] = new CelestialBody("b"+i, Math.random()*2e36,
                     new Vector3(Math.random()*AU*4-AU, Math.random()*AU*3-AU, Math.random()*AU*3-AU));
             testTree.add(bodies[i]);
         }

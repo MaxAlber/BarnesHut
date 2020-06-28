@@ -11,6 +11,8 @@ public class Simulation {
 
     public static void main(String[] args)
     {
+        Gui gui = new Gui();
+
         Tree testTree = new Tree();
 
         CelestialBody bodies[] = new CelestialBody[n];
